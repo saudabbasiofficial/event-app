@@ -11,12 +11,17 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { useForm } from "react-hook-form";
+import { createEvent } from "../libs/server.actions";
 
 const CreateForm = () => {
   // implment form handling logic here using react-hook-form
   const { register, handleSubmit, watch } = useForm();
-  const formSubmit = (data: any) => {
-    console.log(watch(data));
+  const formSubmit = async (data: any) => {
+   await createEvent(data).then((res) => {
+      console.log(res);
+      alert("Event created successfully!");
+
+    });
   };
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 p-4 md:p-6">
@@ -46,7 +51,7 @@ const CreateForm = () => {
                     type="text"
                     placeholder="Enter item name"
                     className="w-full px-4 py-3 text-gray-900 placeholder-gray-400 bg-transparent border-b border-gray-200 focus:border-blue-500 focus:outline-none transition-colors"
-                    {...register("name")}
+                    {...register("name", { required: true })}
                   />
                 </div>
               </div>
@@ -61,7 +66,7 @@ const CreateForm = () => {
                   <input
                     type="date"
                     className="w-full px-4 py-3 text-gray-900 bg-transparent border-b border-gray-200 focus:border-blue-500 focus:outline-none transition-colors appearance-none"
-                    {...register("date")}
+                    {...register("date", { required: true })}
                   />
                 </div>
               </div>
@@ -77,7 +82,7 @@ const CreateForm = () => {
                     type="text"
                     placeholder="Enter location"
                     className="w-full px-4 py-3 text-gray-900 placeholder-gray-400 bg-transparent border-b border-gray-200 focus:border-blue-500 focus:outline-none transition-colors"
-                    {...register("location")}
+                    {...register("location", { required: true })}
                   />
                 </div>
               </div>
@@ -106,7 +111,7 @@ const CreateForm = () => {
                 </label>
                 <div className="relative">
                   <input
-                    type="string"
+                    type="number"
                     placeholder="0.00"
                     min="0"
                     step="0.01"
@@ -115,6 +120,23 @@ const CreateForm = () => {
                   />
                   <div className="absolute inset-y-0 right-0 flex items-center pr-3">
                     <span className="text-gray-400 text-sm">USD</span>
+                  </div>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <label className="flex items-center gap-2 text-xs font-medium text-gray-700 uppercase tracking-wide">
+                  <DollarSign size={14} />
+                  Description
+                </label>
+                <div className="relative">
+                  <textarea
+                    rows={4}
+                    placeholder="Describe the event in detail"
+                    className="w-full px-4 py-3 text-gray-900 placeholder-gray-400 bg-transparent border-b border-gray-200 focus:border-blue-500 focus:outline-none transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                    {...register("description", { required: true })}
+                  />
+                  <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+                    <span className="text-gray-400 text-sm"></span>
                   </div>
                 </div>
               </div>
